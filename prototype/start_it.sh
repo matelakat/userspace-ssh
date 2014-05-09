@@ -36,6 +36,12 @@ ListenAddress $HOST:$PORT
 StrictModes no
 EOF
 
+    cat << EOF
+About to start sshd server. Connect to it with:
+
+ssh -i $DIR/key_$USER -p $PORT $USER@localhost
+
+EOF
     # Start sshd server
-    $(which sshd) -d -D -h "$DIR/key_host" -f "$DIR/sshd_config"
+    fakeroot $(which sshd) -d -D -h "$DIR/key_host" -f "$DIR/sshd_config"
 )
