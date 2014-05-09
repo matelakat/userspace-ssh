@@ -26,7 +26,7 @@ echo "SSH HOMEDIR: $DIR"
     # Create a user key
     ssh-keygen -f "$DIR/key_$SSH_USER" -N "" -C "$SSH_USER"
 
-    cp key_$USER.pub $SSH_USER/.ssh/authorized_keys
+    cp key_$SSH_USER.pub $SSH_USER/.ssh/authorized_keys
 
     # Generate config file
     cat > sshd_config << EOF
