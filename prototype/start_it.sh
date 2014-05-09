@@ -3,6 +3,7 @@
 set -eux
 HOST=0.0.0.0
 PORT=4343
+SSH_USER="root"
 
 # Create a working directory
 DIR=$(mktemp -d)
@@ -20,18 +21,18 @@ echo "SSH HOMEDIR: $DIR"
     ssh-keygen -f "$DIR/key_host" -N "" -C "hostkey"
 
     # Create a directory for the user
-    mkdir -p "$USER/.ssh"
+    mkdir -p "$SSH_USER/.ssh"
 
     # Create a user key
-    ssh-keygen -f "$DIR/key_$USER" -N "" -C "$USER"
+    ssh-keygen -f "$DIR/key_$SSH_USER" -N "" -C "$SSH_USER"
 
-    cp key_$USER.pub $USER/.ssh/authorized_keys
+    cp key_$USER.pub $SSH_USER/.ssh/authorized_keys
 
     # Generate config file
     cat > sshd_config << EOF
 UsePrivilegeSeparation no
 AuthorizedKeysFile $DIR/%u/.ssh/authorized_keys
-AllowUsers $USER
+AllowUsers $SSH_USER
 ListenAddress $HOST:$PORT
 StrictModes no
 EOF
@@ -39,7 +40,7 @@ EOF
     cat << EOF
 About to start sshd server. Connect to it with:
 
-ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i $DIR/key_$USER -p $PORT $USER@localhost
+ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i $DIR/key_$SSH_USER -p $PORT $SSH_USER@localhost
 
 EOF
     # Start sshd server
