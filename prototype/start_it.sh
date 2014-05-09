@@ -39,7 +39,7 @@ EOF
     cat << EOF
 About to start sshd server. Connect to it with:
 
-ssh -i $DIR/key_$USER -p $PORT $USER@localhost
+ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i $DIR/key_$USER -p $PORT $USER@localhost
 
 EOF
     # Start sshd server
